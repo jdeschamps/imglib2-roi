@@ -34,10 +34,7 @@
 
 package net.imglib2.roi.labeling;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -143,6 +140,15 @@ public class ImgLabeling< T, I extends IntegerType< I > >
 		final List< Set< T > > labelSets = Stream.concat( Stream.< Set< T > >of( Collections.emptySet() ),
 				labels.stream().map( Collections::singleton ) ).collect( Collectors.toList() );
 		return fromImageAndLabelSets( img, labelSets );
+	}
+
+	public static <T, I extends IntegerType<I>> Set<I> getOccurringValues(ImgLabeling<T, I> img){
+		Set<I> occurringValues = new HashSet<>();
+		for(I pixel : Views.iterable(img.getIndexImg())) {
+			occurringValues.add(pixel);
+		}
+
+		return occurringValues;
 	}
 
 	public LabelingMapping< T > getMapping()
@@ -297,4 +303,6 @@ public class ImgLabeling< T, I extends IntegerType< I > >
 	{
 		return indexAccessible;
 	}
+
+
 }
